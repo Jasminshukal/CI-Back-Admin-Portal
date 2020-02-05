@@ -1,0 +1,267 @@
+<style type="text/css">
+  #image_crop{
+    width: 100%;
+  }
+</style>
+<!-- <script src="<?=base_url();?>assets/global/plugins/cropper/js/jquery.min.js"></script> -->
+  <link rel="stylesheet" href="<?=base_url();?>assets/global/plugins/cropper/css/cropper.min.css">
+  <link rel="stylesheet" href="<?=base_url();?>assets/global/plugins/cropper/css/main1.css">
+<!-- <link href="<?=base_url();?>assets/global/plugins/cropper/css/bootstrap.min.css" rel="stylesheet"> -->
+<div class="row">
+   <div class="col-md-12 ">
+      <!-- BEGIN SAMPLE FORM PORTLET-->
+      <div class="portlet light bordered">
+         <div class="portlet-title">
+            <div class="caption">
+               <span class="caption-subject font-blue-sharp bold uppercase">System Setting</span>
+            </div>
+         </div>
+         <div class="portlet-body form">
+            <br>
+            <!-- prosess.gif -->
+            </div>
+             <?php
+              if($this->session->flashdata('message')) {
+                echo "<div class='form-group'><div class='col-md-12'><div class='alert alert-info'>";
+                echo $this->session->flashdata('message');;
+                echo "</div></div></div>";
+                }
+                if(!empty($message))
+                {
+
+                    echo "<div class='form-group'><div class='col-md-12'><div class='alert alert-info'>";
+                    echo $message;
+                    echo "</div></div></div>";
+                }
+                    ?>
+                <?php
+                    if(!empty($error))
+                    {
+                        echo '<div class="form-group">
+                    <div class="col-md-12">
+                      <div class="alert alert-danger">';
+                        echo $error;
+                        echo "</div></div></div>";
+                    }
+                    ?>
+            <div class="container">
+               <style type="text/css">
+                  .well-primary {
+                color: rgb(255, 255, 255);
+                background-color: rgb(66, 139, 202);
+                border-color: rgb(53, 126, 189);
+                }
+               </style>
+    <div class="row">
+        <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <i class="fa fa-cog" aria-hidden="true"></i>
+
+                            </span> Profile Settings
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <h4>Profile Image
+                                        <?php
+                                if($profile->profile_image=="")
+                                {
+                                  $profile->profile_image="assets/profile_img/default.png";
+                                }
+                                ?>
+                                  
+                                </h4>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-8" id="crop-avatar">
+                                    <div class="avatar-view" title="Change the Profile Image">
+                                      <img src="<?php echo base_url().$profile->profile_image; ?>" alt="Avatar">
+                                    </div>
+
+                                    <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+                                      <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                          <form class="avatar-form" action="<?=base_url();?>ajax_controller/upload_profile" enctype="multipart/form-data" method="post">
+                                            <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                              <h4 class="modal-title" id="avatar-modal-label">Change Profile Image</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                              <div class="avatar-body">
+
+                                                <!-- Upload image and data -->
+                                                <div class="avatar-upload">
+                                                  <input type="hidden" class="avatar-src" name="avatar_src">
+                                                  <input type="hidden" class="avatar-data" name="avatar_data">
+                                                  <label for="avatarInput">Select File</label>
+                                                  <input type="file" class="avatar-input" id="avatarInput" name="avatar_file">
+                                                </div>
+
+                                                <!-- Crop and preview -->
+                                                <div class="row">
+                                                  <div class="col-md-12">
+                                                    <div class="avatar-wrapper">
+                                                    </div>
+                                                  </div>
+                                                  <!-- <div class="col-md-3">
+                                                    <div class="avatar-preview preview-lg"></div>
+                                                    <div class="avatar-preview preview-md"></div>
+                                                    <div class="avatar-preview preview-sm"></div>
+                                                  </div> -->
+                                                </div>
+
+                                                <div class="row avatar-btns">
+                                                  <div class="col-md-9">
+                                                    <div class="btn-group">
+                                                      <!-- <button type="button" class="btn btn-primary" data-method="rotate" data-option="-90" title="Rotate -90 degrees">Rotate Left</button>
+                                                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="-15">-15deg</button>
+                                                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="-30">-30deg</button>
+                                                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="-45">-45deg</button> -->
+                                                    </div>
+                                                    <div class="btn-group">
+                                                      <!-- <button type="button" class="btn btn-primary" data-method="rotate" data-option="90" title="Rotate 90 degrees">Rotate Right</button>
+                                                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="15">15deg</button>
+                                                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="30">30deg</button>
+                                                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="45">45deg</button> -->
+                                                    </div>
+                                                  </div>
+                                                  <div class="col-md-3">
+                                                    <button type="submit" class="btn-block avatar-save btn <?=$this->settings['success_color'];?>">Save</button>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </form>
+                                        </div>
+                                      </div>
+                                    </div><!-- /.modal -->
+                                </div>
+                              <!-- div And model -->
+                            </div>
+                            <div class="row">
+                              &nbsp;
+                            </div>
+                            <form method="post">
+                            <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <h4>Profile Name</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="profile_name" id="profile_name" placeholder="Profile Name" value="<?php if(!empty($profile->name)){ echo $profile->name; } ?>" />
+                            </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="submit" value="Update" id="submit_logo_uplode1" class="btn <?=$this->settings['success_color'];?>" name="logo_save">
+                                </div>
+                            </div>
+                            </form>
+                  
+                        </div>
+                    </div>
+                </div>
+            
+        </div>
+    </div>
+</div>
+         </div>
+         <!-- panel body -->
+ 
+      
+      </div>
+      <!-- panel-->
+      <!-- END SAMPLE FORM PORTLET-->
+   </div>
+</div>
+
+<!-- row -->
+
+<!--         <script src="<?=base_url();?>assets/global/plugins/cropper/js/jquery.min.js"></script>
+        <script src="<?=base_url();?>assets/global/plugins/cropper/js/bootstrap.min.js"></script>
+        <script src="<?=base_url();?>assets/global/plugins/cropper/js/cropper.min.js"></script>
+        <script src="<?=base_url();?>assets/global/plugins/cropper/js/main1.js"></script>
+         -->
+<!--      <script src="<?=base_url();?>assets/global/plugins/cropper/js/jquery.min.js"></script>
+  <script src="<?=base_url();?>assets/global/plugins/cropper/js/bootstrap.min.js"></script>
+  <script src="<?=base_url();?>assets/global/plugins/cropper/js/cropper.min.js"></script>
+  <script src="<?=base_url();?>assets/global/plugins/cropper/js/main1.js"></script> -->
+<script type="text/javascript">
+   document.addEventListener('DOMContentLoaded', function()
+   {
+		// $("#btn_save_image").click(function(){
+		// // var data = $image.cropper('getCroppedCanvas');
+		// var dataimg = $image.cropper('croppedImage');
+
+		// $image.cropper('getCroppedCanvas').toBlob(function (blob) {
+		// var formData = new FormData();
+
+		// formData.append('croppedImage', blob);
+
+		// $.ajax('<?=base_url("Setting/update_img");?>', {
+		// method: "POST",
+		// data: dataimg,
+		// processData: false,
+		// contentType: false,
+		// success: function (res) {
+		// console.log(res);
+		// console.log('Upload success');
+		// },
+		// error: function () {
+		// console.log('Upload error');
+		// }
+		// });
+		// }); 
+		// // var data = $image.cropper('getCroppedCanvas');
+		// console.log(dataimg);
+		// });
+
+
+
+
+    $("#remove_logo").click(function(){
+      console.log("remove_logo");
+      $("#currunt_logo").hide();
+      $("#remove_logo").hide();
+      $("#input_file_uplode").show();
+      //$("#submit_logo_uplode").show();
+    });
+      $("#input_file_uplode").hide();
+     // $("#submit_logo_uplode").hide();
+
+      $(document).on("click",".save_data",function()
+     {
+      var ele=$(this);
+      ele.attr("disabled", 'disabled');
+          $.ajax({
+               url:"<?=base_url("ajax_controller/update_role");?>",
+               type: "POST",
+               data:$("#role_data").serialize(),
+               dataType : "json",
+               success:function(data){
+                console.log(data);
+                if(data.status=1)
+                {
+                  location.reload();
+                }
+             },
+               error:function(data){ 
+                   console.log(data);
+               }
+           });//ajax
+      });
+      ///
+    });
+  
+</script>
